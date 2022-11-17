@@ -9,3 +9,4 @@
 - **Section #5 - intro to Vue.js** . [Branch link](https://github.com/Softonix/softonix-incubator/tree/section-5-intro-to-vue)
 - **Section #6 - Vue.js part 2** . [Branch link](https://github.com/Softonix/softonix-incubator/tree/section-6-vue-part-2)
 - **Section #9 - Data fetching** . [Branch link](https://github.com/Softonix/softonix-incubator/tree/section-9-data-fetching)
+- **Section #10 - Performance** . [Branch link](https://github.com/Softonix/softonix-incubator/tree/section-10-performance)
