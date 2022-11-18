@@ -8,8 +8,10 @@ declare module 'vue-router' {
 }
 
 declare module '@vue/runtime-core' {
-  export interface ComponentCustomProperties {
+  interface ComponentCustomProperties {
     // todo: Here you define you global vue definitions.
     $routeNames: typeof routeNames
   }
 }
+
+export { }
