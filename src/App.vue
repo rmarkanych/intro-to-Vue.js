@@ -1,8 +1,22 @@
 <template>
   <div class="max-w-[1440px] p-6">
-    <h3 class="font-medium m-0">Contact list</h3>
-
+    <div class="flex space-x-10">
+      <h3 class="font-medium m-0 ">Contact list</h3>
+      <button
+        :style="{color:!isNewCard ?'#3682F6' : '#EF4444' }"
+        class="cursor-pointer hover:underline"
+        @click="isNewCard = true"
+      >
+        Add contact
+      </button>
+    </div>
     <div class="contact-list grid-cols-[repeat(auto-fill,_minmax(320px,_1fr))] grid gap-5 my-5">
+      <ContactItem
+        v-if="isNewCard"
+        :contact="{description: '', name: '', image: 'https://images.unsplash.com/photo-1599508704512-2f19efd1e35f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2873&q=80', id:0}"
+        @cancel="contactCancel"
+        @create="contactCreate"
+      />
       <ContactItem
         v-for="(contact, index) in contacts"
         :key="contact.id"
@@ -19,7 +33,10 @@ import { ref } from 'vue'
 import type { IContact } from '@/types'
 import ContactItem from '@/components/ContactItem.vue'
 
+const isNewCard = ref(false)
+
 const contacts = ref<IContact[]>([
+
   {
     id: 1,
     name: 'Esther Howard',
@@ -38,13 +55,25 @@ const contacts = ref<IContact[]>([
     description: 'Product Directives Officer',
     image: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60'
   }
+
 ])
 
 function deleteContact (index: number) {
   contacts.value.splice(index, 1)
+  console.log(contacts)
 }
 
 function onContactSave (contact: IContact, index: number) {
   contacts.value[index] = { ...contact }
+}
+
+function contactCreate (newContact: Omit<IContact, 'id'>) {
+  isNewCard.value = false
+  const id = +new Date()
+  contacts.value.unshift({ ...newContact, id })
+}
+
+function contactCancel () {
+  isNewCard.value = false
 }
 </script>

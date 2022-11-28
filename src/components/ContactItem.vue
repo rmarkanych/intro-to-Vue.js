@@ -3,14 +3,24 @@
     <div class="p-6 pb-2">
       <div class="flex">
         <div class="flex-grow text-sm truncate">
-          <template v-if="editMode">
+          <template v-if="editMode || props.isNew">
             <input
               ref="inputRef"
               v-model="localContact.name"
               type="text"
               class="block font-medium w-full"
+              @keyup.esc="onCancel"
+              @keyup.enter="onSave"
+              @input="validatedInput"
             >
-            <input v-model="localContact.description" type="text" class="block mt-1 text-gray w-full">
+            <input
+              v-model="localContact.description"
+              type="text"
+              class="block mt-1 text-gray w-full"
+              @input="validatedInput"
+              @keyup.esc="onCancel"
+              @keyup.enter="onSave"
+            >
           </template>
 
           <template v-else>
@@ -26,16 +36,20 @@
         >
       </div>
       <div class="flex justify-end mt-2 gap-2">
-        <template v-if="editMode">
+        <template v-if="editMode || props.isNew">
           <span
             class="text-blue-500 font-medium text-xs cursor-pointer hover:underline"
-            @click="editMode = false"
+
+            @click="onCancel"
           >Cancel</span>
 
-          <span
+          <button
+            ref="buttonRef"
             class="text-blue-500 font-medium text-xs cursor-pointer hover:underline"
-            @click="onSave"
-          >Save</span>
+            @click="props.isNew? onCreate() : onSave()"
+          >
+            {{ props.isNew ? 'Create' : 'Save' }}
+          </button>
         </template>
 
         <template v-else>
@@ -69,36 +83,65 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, onMounted } from 'vue'
 import type { IContact } from '@/types'
 import IconEnvelope from '@/components/icons/IconEnvelope.vue'
 import IconPhone from '@/components/icons/IconPhone.vue'
 
 const props = defineProps<{
   contact: IContact
+  isNew?: boolean
 }>()
 
-const emit = defineEmits(['delete', 'save'])
+const emit = defineEmits(['delete', 'save', 'create', 'cancel'])
 
 const inputRef = ref<HTMLInputElement>()
+
+const buttonRef = ref<HTMLButtonElement>()
 
 const localContact = ref<Omit<IContact, 'id'>>({
   name: '',
   description: '',
   image: ''
 })
-
+onMounted(() => {
+  if (props.isNew || editMode) {
+    validatedInput()
+  }
+})
 const editMode = ref(false)
 
 async function triggerEditMode () {
   editMode.value = true
   localContact.value = { ...props.contact }
   await nextTick()
+  validatedInput()
   inputRef.value?.focus()
 }
 
 function onSave () {
   emit('save', localContact.value)
   editMode.value = false
+}
+
+function onCreate () {
+  emit('create', localContact.value)
+}
+
+function onCancel () {
+  emit('cancel')
+  editMode.value = false
+}
+
+function validatedInput () {
+  if (!buttonRef.value) return
+
+  if (localContact.value.name.trim() === '' || localContact.value.description.trim() === '') {
+    buttonRef.value.setAttribute('disabled', '0')
+    buttonRef.value.style.color = 'gray'
+  } else {
+    buttonRef.value.removeAttribute('disabled')
+    buttonRef.value.style.color = '#3682F6'
+  }
 }
 </script>
