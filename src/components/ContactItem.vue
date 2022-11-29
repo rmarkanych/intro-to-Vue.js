@@ -3,12 +3,12 @@
     <div class="p-6 pb-2">
       <div class="flex">
         <div class="flex-grow text-sm truncate">
-          <template v-if="editMode || props.isNew">
+          <template v-if="props.isNew || editMode">
             <input
               ref="inputRef"
               v-model="localContact.name"
               type="text"
-              class="block font-medium w-full"
+              class="block font-medium w-full border border-gray"
               @keyup.esc="onCancel"
               @keyup.enter="onSave"
               @input="validatedInput"
@@ -16,7 +16,7 @@
             <input
               v-model="localContact.description"
               type="text"
-              class="block mt-1 text-gray w-full"
+              class="block mt-1 text-gray w-full border border-gray"
               @input="validatedInput"
               @keyup.esc="onCancel"
               @keyup.enter="onSave"
@@ -32,11 +32,11 @@
         </div>
         <img
           class="w-[40px] h-[40px] object-cover ml-2 rounded-full shrink-0"
-          :src="contact.image" alt="contact-logo"
+          :src="contact.image? contact.image : 'https://images.unsplash.com/photo-1599508704512-2f19efd1e35f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2873&q=80' " alt="contact-logo"
         >
       </div>
       <div class="flex justify-end mt-2 gap-2">
-        <template v-if="editMode || props.isNew">
+        <template v-if="props.isNew || editMode">
           <span
             class="text-blue-500 font-medium text-xs cursor-pointer hover:underline"
 

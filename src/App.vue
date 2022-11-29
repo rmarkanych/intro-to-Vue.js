@@ -4,7 +4,7 @@
       <h3 class="font-medium m-0 ">Contact list</h3>
       <button
         :style="{color:!isNewCard ?'#3682F6' : '#EF4444' }"
-        class="cursor-pointer hover:underline"
+        class="cursor-pointer  border border-gray rounded-md px-2"
         @click="isNewCard = true"
       >
         Add contact
@@ -13,9 +13,11 @@
     <div class="contact-list grid-cols-[repeat(auto-fill,_minmax(320px,_1fr))] grid gap-5 my-5">
       <ContactItem
         v-if="isNewCard"
-        :contact="{description: '', name: '', image: 'https://images.unsplash.com/photo-1599508704512-2f19efd1e35f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2873&q=80', id:0}"
+        isNew
+        :contact="{description: '', name: '', image :'https://images.unsplash.com/photo-1599508704512-2f19efd1e35f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2873&q=80', id:0}"
         @cancel="contactCancel"
         @create="contactCreate"
+        @save="onContactSave"
       />
       <ContactItem
         v-for="(contact, index) in contacts"
