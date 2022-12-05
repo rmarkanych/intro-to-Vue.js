@@ -18,7 +18,7 @@ export const contactsRoutes: RouteRecordRaw[] = [
     path: '/contacts/:contactId',
     name: contactRouteNames.upsertContact,
     component: UpsertContact,
-    beforeEnter (to, from, next) {
+    beforeEnter (to, _, next) {
       const contactsStore = useContactsStore()
       const { contacts } = storeToRefs(contactsStore)
       if (to.params.contactId === 'new' || contacts.value.find(c => c.id === +to.params.contactId)) {
