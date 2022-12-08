@@ -3,13 +3,16 @@
     <div class="flex">
       <div class="flex-grow text-sm truncate" @click.stop>
         <template v-if="editMode">
-          <input
+          <el-input
             ref="inputRef"
             v-model="localContact.name"
             type="text"
             class="block font-medium w-full"
-          >
-          <input v-model="localContact.description" type="text" class="block mt-1 text-gray w-full">
+          />
+          <el-input
+            v-model="localContact.description"
+            type="text" class="block mt-1 text-gray w-full"
+          />
         </template>
 
         <template v-else>
@@ -41,29 +44,45 @@
       </div>
     </div>
 
-    <div class="flex justify-end mt-2 gap-2">
+    <div class="flex justify-end mt-2">
       <template v-if="editMode">
-        <span
-          class="text-blue-500 font-medium text-xs cursor-pointer hover:underline"
+        <el-button
+          :type="$elComponentType.primary"
+          :size="$elComponentSize.small"
+          class="text-blue-500 font-medium text-xs cursor-pointer"
           @click.stop="editMode = false"
-        >Cancel</span>
+        >
+          Cancel
+        </el-button>
 
-        <span
-          class="text-blue-500 font-medium text-xs cursor-pointer hover:underline"
+        <el-button
+          :type="$elComponentType.primary"
+          :size="$elComponentSize.small"
+          class="text-blue-500 font-medium text-xs cursor-pointer "
           @click.stop="onSave"
-        >Save</span>
+        >
+          Save
+        </el-button>
       </template>
 
       <template v-else>
-        <span
-          class="text-blue-500 font-medium text-xs cursor-pointer hover:underline"
+        <el-button
+          :type="$elComponentType.primary"
+          :size="$elComponentSize.small"
+          class="text-blue-500 font-medium text-xs cursor-pointer "
           @click.stop="triggerEditMode"
-        >Edit</span>
+        >
+          Edit
+        </el-button>
 
-        <span
-          class="text-red-500 font-medium text-xs cursor-pointer hover:underline"
+        <el-button
+          :type="$elComponentType.danger"
+          :size="$elComponentSize.small"
+          class="text-red-500 font-medium text-xs cursor-pointer "
           @click.stop="$emit('delete', contact)"
-        >Delete</span>
+        >
+          Delete
+        </el-button>
       </template>
     </div>
 
